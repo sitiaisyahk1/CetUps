@@ -1,5 +1,6 @@
 package com.sitiaisyah.idn.cetupapp.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,6 +35,7 @@ class SiginActivity : AppCompatActivity() {
     }
 
     private fun signinUser() {
+
         val email: String = et_email_signin.text.toString()
         val password: String = et_password_signin.text.toString()
 

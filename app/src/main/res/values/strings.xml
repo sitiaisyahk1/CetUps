@@ -83,4 +83,7 @@
     <string name="no_message">No Message Available</string>
     <string name="upload">Please Wait for Uploading</string>
     <string name="wait">Loading</string>
+    <string name="search">Search..</string>
+    <string name="keep1">Your saved files</string>
+    <string name="english">English</string>
 </resources>

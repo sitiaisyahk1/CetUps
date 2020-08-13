@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,7 +49,8 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean) 
     override fun onBindViewHolder(holder: UserAdapter.ViewHolder, position: Int) {
         val user: Users = mUsers[position]
         holder.userName.text = user!!.getUserName()
-        Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profile)
+        Glide.with(mContext).load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profile)
+//        Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profile)
 
         if (isChatCheck) {
             retrieveLastMessage(user.getUID(), holder.lastMessage)
