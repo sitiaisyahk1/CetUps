@@ -12,22 +12,22 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.sitiaisyah.idn.cetupapp.R
 import com.sitiaisyah.idn.cetupapp.activity.FullViewImageActivity
-import com.sitiaisyah.idn.cetupapp.model.ModelUser
-import com.squareup.picasso.Picasso
+import com.sitiaisyah.idn.cetupapp.model.Chat
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: String) :
+class ChatAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder?>() {
 
     private val mContext: Context
-    private val mChatList: List<ModelUser>
+    private val mChatList: List<Chat>
     private val imageUrl: String
-    var firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
+    val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
 
     init {
         this.mContext = mContext
@@ -37,12 +37,12 @@ class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: Strin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatAdapter.ViewHolder {
         return if (viewType == 1) {
-            val view: View =
-                LayoutInflater.from(mContext).inflate(R.layout.item_message_right, parent, false)
+            val view: View = LayoutInflater.from(mContext)
+                .inflate(R.layout.message_item_right, parent, false)
             ViewHolder(view)
         } else {
-            val view: View =
-                LayoutInflater.from(mContext).inflate(R.layout.item_message_left, parent, false)
+            val view: View = LayoutInflater.from(mContext)
+                .inflate(R.layout.message_item_left, parent, false)
             ViewHolder(view)
         }
     }
@@ -52,51 +52,51 @@ class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: Strin
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ViewHolder, position: Int) {
-        val chat: ModelUser = mChatList[position]
-        Picasso.get().load(imageUrl).into(holder.imageProfile)
-        if (chat.getMessage().equals("sent an image") && !chat.getUrl().equals("")) {
-
+        val chat = mChatList[position]
+        Glide.with(mContext).load(imageUrl).into(holder.imageProfile!!)
+        if (chat.getMessage().equals("sent an image") && chat.getUrl().equals("")) {
+            //right
             if (chat.getSender().equals(firebaseUser!!.uid)) {
                 holder.textMessageShow!!.visibility = View.GONE
                 holder.rightImage!!.visibility = View.GONE
-                Picasso.get().load(chat.getUrl()).into(holder.rightImage)
+                Glide.with(mContext).load(chat.getUrl()).into(holder.rightImage!!)
                 holder.rightImage!!.setOnClickListener {
-                    val option = arrayOf<CharSequence>(
+                    val options = arrayOf<CharSequence>(
                         "Full View",
                         "Delete Image",
                         "Cancel"
                     )
-                    var builder: AlertDialog.Builder =
-                        AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("What do you want?")
 
-                    builder.setItems(
-                        option,
-                        DialogInterface.OnClickListener { dialog, which ->
-                            if (which == 0) {
-                                val intent =
-                                    Intent(mContext, FullViewImageActivity::class.java)
-                                intent.putExtra("url", chat.getUrl())
-                                mContext.startActivity(intent)
-                            } else if (which == 1) {
-                                deleteSentMessage(position, holder)
-                            }
-                        })
+                    var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("What do you want ?")
+
+                    builder.setItems(options, DialogInterface.OnClickListener { dialog, wich ->
+                        if (wich == 0) {
+                            val intent = Intent(mContext, FullViewImageActivity::class.java)
+                            intent.putExtra("url", chat.getUrl())
+                            mContext.startActivity(intent)
+
+                        } else if (wich == 1) {
+                            deleteSentMessage(position, holder)
+                        }
+                    })
                     builder.show()
                 }
-            } else if (chat.getSender().equals(firebaseUser!!.uid))
+            }
+            //left
+            else if (chat.getSender().equals(firebaseUser.uid))
                 holder.textMessageShow!!.visibility = View.GONE
             holder.leftImage!!.visibility = View.GONE
-            Picasso.get().load(chat.getUrl()).into(holder.leftImage)
+            Glide.with(mContext).load(chat.getUrl()).into(holder.leftImage!!)
             holder.leftImage!!.setOnClickListener {
-                val option = arrayOf<CharSequence>(
+                val options = arrayOf<CharSequence>(
                     "Full View",
                     "Cancel"
                 )
                 var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
                 builder.setTitle("What do you want ?")
-                builder.setItems(option, DialogInterface.OnClickListener { dialog, which ->
-                    if (which == 0) {
+                builder.setItems(options, DialogInterface.OnClickListener { dialog, wich ->
+                    if (wich == 0) {
                         val intent = Intent(mContext, FullViewImageActivity::class.java)
                         intent.putExtra("url", chat.getUrl())
                         mContext.startActivity(intent)
@@ -104,18 +104,21 @@ class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: Strin
                 })
                 builder.show()
             }
-        } else {
-            holder.textMessageShow!!.text = chat.getMessage()
-            if (firebaseUser!!.uid == chat.getSender()) {
-                holder.textMessageShow!!.setOnClickListener {
-                    val option = arrayOf<CharSequence>(
-                        "Delete message", "Cancel"
-                    )
 
+        }
+        //text
+        else {
+            holder.textMessageShow!!.text = chat.getMessage()
+            if (firebaseUser.uid == chat.getSender()) {
+                holder.textMessageShow!!.setOnClickListener {
+                    val options = arrayOf<CharSequence>(
+                        "Delete Message",
+                        "Cancel"
+                    )
                     val builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
                     builder.setTitle("What do you want ?")
-                    builder.setItems(option, DialogInterface.OnClickListener { dialog, which ->
-                        if (which == 0) {
+                    builder.setItems(options, DialogInterface.OnClickListener { dialog, wich ->
+                        if (wich == 0) {
                             deleteSentMessage(position, holder)
                         }
                     })
@@ -123,51 +126,52 @@ class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: Strin
                 }
             }
         }
-
+        //sent
         if (position == mChatList.size - 1) {
-            if (chat.isSeen()!!) {
+            if (chat.isSeen()) {
                 holder.textSeen!!.text = "Seen"
-                if (chat.getMessage().equals("sent you image") && !chat.getUrl().equals("")) {
+                if (chat.getMessage().equals("sent you image") && !chat
+                        .getUrl().equals("")
+                ) {
                     val lp: RelativeLayout.LayoutParams? =
                         holder.textSeen!!.layoutParams as RelativeLayout.LayoutParams?
                     lp!!.setMargins(0, 245, 10, 0)
                     holder.textSeen!!.layoutParams = lp
                 }
-            } else {
+            }else {
                 holder.textSeen!!.text = "Sent"
-                if (chat.getMessage().equals("sent you image") && !chat
-                        .getUrl().equals("")
-                ) {
-                    val lp: RelativeLayout.LayoutParams? = holder.textSeen!!
-                        .layoutParams as RelativeLayout.LayoutParams?
+                if (chat.getMessage().equals("sent you image")&& !chat.getUrl().equals("")){
+                    val lp: RelativeLayout.LayoutParams? =
+                        holder.textSeen!!.layoutParams as RelativeLayout.LayoutParams?
                     lp!!.setMargins(0, 245, 10, 0)
                     holder.textSeen!!.layoutParams = lp
                 }
             }
-        } else {
+        }else {
             holder.textSeen!!.visibility = View.GONE
         }
+
     }
 
     private fun deleteSentMessage(position: Int, holder: ViewHolder) {
         val reff = FirebaseDatabase.getInstance().reference.child("Chats")
-            .child(mChatList.get(position).getMessageID()!!)
+            .child(mChatList.get(position).getMessageId()!!)
             .removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(holder.itemView.context, "Deleted", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(
-                        holder.itemView.context,
-                        "Failed, Not Deleted !",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            .addOnCompleteListener {
+                    task->
+                if(task.isSuccessful) {
+                    Toast.makeText(holder.itemView.context, "Deleted",
+                        Toast.LENGTH_SHORT).show()
+                }else {
+                    Toast.makeText(holder.itemView.context, "Failed Not Deleted !",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageProfile: CircleImageView? = null
+        var profile: CircleImageView? = null
         var textMessageShow: TextView? = null
         var leftImage: ImageView? = null
         var rightImage: ImageView? = null
@@ -175,17 +179,19 @@ class ChatAdapter(mContext: Context, mChatList: List<ModelUser>, imageUrl: Strin
 
         init {
             imageProfile = itemView.findViewById(R.id.iv_profile_chat)
+            profile = itemView.findViewById(R.id.iv_profile)
             textMessageShow = itemView.findViewById(R.id.tv_show_message)
-            leftImage = itemView.findViewById(R.id.iv_image_left)
-            rightImage = itemView.findViewById(R.id.iv_image_right)
+//            leftImage = itemView.findViewById(R.id.iv_image_left)
+//            rightImage = itemView.findViewById(R.id.iv_image_right)
             textSeen = itemView.findViewById(R.id.tv_seen)
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mChatList[position].getSender().equals(firebaseUser!!.uid)) {
+        return if(mChatList[position].getSender().equals(firebaseUser.uid)){
             1
-        } else {
+        }else {
             0
         }
     }

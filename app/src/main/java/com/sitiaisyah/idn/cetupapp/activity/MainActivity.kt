@@ -17,6 +17,7 @@ import com.google.firebase.database.*
 import com.sitiaisyah.idn.cetupapp.R
 import com.sitiaisyah.idn.cetupapp.fragment.CallFragment
 import com.sitiaisyah.idn.cetupapp.fragment.ChatFragment
+import com.sitiaisyah.idn.cetupapp.fragment.SearchFragment
 import com.sitiaisyah.idn.cetupapp.fragment.SettingFragment
 import com.sitiaisyah.idn.cetupapp.model.Users
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,10 +41,8 @@ class MainActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
 
-        val viewPagerAdapter =
-            ViewPagerAdapter(
-                supportFragmentManager
-            )
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.addFragment(SearchFragment(), "search")
         viewPagerAdapter.addFragment(ChatFragment(), "chats")
         viewPagerAdapter.addFragment(CallFragment(), "call")
         viewPagerAdapter.addFragment(SettingFragment(), "setting")

@@ -147,7 +147,7 @@
         app:srcCompat="@drawable/profile" />
 
     <TextView
-        android:id="@+id/tv_chat_name"
+        android:id="@+id/tv_username_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_7dp"
@@ -162,7 +162,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_background_img" />
 
     <TextView
-        android:id="@+id/tv_chat_message"
+        android:id="@+id/tv_message_last"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -170,8 +170,8 @@
         android:text="@string/message"
         android:textColor="#2D303E"
         android:textSize="@dimen/_14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_chat_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_name" />
+        app:layout_constraintStart_toStartOf="@+id/tv_username_search"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_search" />
 
     <ImageView
         android:id="@+id/iv_line"
@@ -180,7 +180,7 @@
         android:layout_marginTop="@dimen/_25dp"
         android:contentDescription="@string/line"
         app:layout_constraintEnd_toEndOf="@+id/et_search"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_message"
+        app:layout_constraintTop_toBottomOf="@+id/tv_message_last"
         app:srcCompat="@drawable/line" />
 
     <TextView
@@ -189,9 +189,9 @@
         android:layout_height="wrap_content"
         android:text="@string/time"
         android:textSize="@dimen/_14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_chat_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_username_search"
         app:layout_constraintEnd_toEndOf="@+id/iv_line"
-        app:layout_constraintTop_toTopOf="@+id/tv_chat_name" />
+        app:layout_constraintTop_toTopOf="@+id/tv_username_search" />
 
 
     <!--    <ImageView-->
@@ -272,6 +272,6 @@
         app:layout_constraintHorizontal_bias="0.388"
         app:layout_constraintStart_toStartOf="@+id/et_search"
         app:layout_constraintTop_toBottomOf="@+id/iv_line"
-        tools:listitem="@layout/chat_list" />
+        tools:listitem="@layout/user_search_item_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

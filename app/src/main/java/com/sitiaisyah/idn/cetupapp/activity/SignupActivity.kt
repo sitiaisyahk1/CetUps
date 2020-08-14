@@ -24,7 +24,7 @@ class SignupActivity : AppCompatActivity() {
         val toolBar: Toolbar = findViewById(R.id.toolbar_signup)
         setSupportActionBar(toolBar)
 
-        supportActionBar!!.title = getString(R.string.signup)
+        supportActionBar!!.title = getString(R.string.text_signup)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolBar.setNavigationOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)

@@ -1,21 +1,20 @@
 package com.sitiaisyah.idn.cetupapp.model
 
 class Token {
-    private var token: String = ""
+    private var token : String = ""
 
-    constructor() {}
+    constructor(){}
 
-    constructor(token: String) {
+    constructor(token:String) {
         this.token = token
     }
 
     // getter and setter
 
-    fun getToken(): String? {
+    fun getToken():String? {
         return token
     }
-
-    fun setToken(token: String?) {
+    fun setToken(token: String?){
         this.token = token!!
     }
 }

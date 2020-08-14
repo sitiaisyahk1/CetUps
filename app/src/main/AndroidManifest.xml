@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.VisitProfileActivity"></activity>
-        <activity android:name=".activity.IsiChatActivity" />
+        <activity android:name=".activity.MessageChatActivity" />
         <activity android:name=".activity.FullViewImageActivity" />
         <activity android:name=".activity.EditProfileActivity" />
         <activity android:name=".activity.WelcomeActivity">
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SiginActivity"
+            android:name=".activity.SigninActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SignupActivity"

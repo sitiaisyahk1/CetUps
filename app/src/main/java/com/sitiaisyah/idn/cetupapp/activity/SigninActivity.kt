@@ -8,19 +8,19 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sitiaisyah.idn.cetupapp.R
-import kotlinx.android.synthetic.main.activity_sigin.*
+import kotlinx.android.synthetic.main.activity_signin.*
 
-class SiginActivity : AppCompatActivity() {
+class SigninActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sigin)
+        setContentView(R.layout.activity_signin)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_signin)
         setSupportActionBar(toolbar)
-        supportActionBar!!.title = getString(R.string.signin)
+        supportActionBar!!.title = getString(R.string.text_signin)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
@@ -35,7 +35,6 @@ class SiginActivity : AppCompatActivity() {
     }
 
     private fun signinUser() {
-
         val email: String = et_email_signin.text.toString()
         val password: String = et_password_signin.text.toString()
 
@@ -65,7 +64,7 @@ class SiginActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-        }
 
+        }
     }
 }
